@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <link href="css/style.css" rel="stylesheet">
+
+    <title>Food Planner Prototype V2</title>
+</head>
+
+<body>
+
+    <div class="container" id="app">
+        <div class="row mt-4">
+            <div class="col">
+
+                <h4 class="mt-4">Wöchentliche Einkäufe</h4>
+
+                <div class="form-check form-switch mt-4">
+                    <input class="form-check-input" type="checkbox" id="weeklyOn" onchange="weeklyOnChanged(this)">
+                    <label class="form-check-label" for="weeklyOn">Berücksichtigen</label>
+                </div>
+
+                <ul class="list-group mt-4">
+                    <li v-for="item in weeklyItems" :key="item.name"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.name }}
+
+
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-secondary btn-sm" type="button" :data-name="item.name"
+                                    data-type="weeklyItems"
+                                    onclick="changeQuantity(this, 'less')">&leftarrow;</span></button>
+                                <input type="text" v-bind:class="{ selected: item.quantity > 0 }"
+                                    class="form-control form-control-sm text-center"
+                                    :value="item.quantity + ' ' + item.grocery.unit" readonly>
+                                <button class="btn btn-secondary btn-sm" type="button" :data-name="item.name"
+                                    data-type="weeklyItems" onclick="changeQuantity(this, 'more')">&rightarrow;</button>
+                            </div>
+                        </div>
+
+
+                    </li>
+                </ul>
+
+                <h4 class="mt-4">Monatliche Einkäufe</h4>
+
+                <div class="form-check form-switch mt-4">
+                    <input class="form-check-input" type="checkbox" id="monthlyOn" onchange="monthlyOnChanged(this)">
+                    <label class="form-check-label" for="monthlyOn">Berücksichtigen</label>
+                </div>
+
+                <ul class="list-group mt-4">
+                    <li v-for="item in monthlyItems" :key="item.name +'_weekly'"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.name }}
+
+
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-secondary btn-sm" type="button" :data-name="item.name"
+                                    data-type="monthlyItems"
+                                    onclick="changeQuantity(this, 'less')">&leftarrow;</span></button>
+                                <input type="text" v-bind:class="{ selected: item.quantity > 0 }"
+                                    class="form-control form-control-sm text-center"
+                                    :value="item.quantity + ' ' + item.grocery.unit" readonly>
+                                <button class="btn btn-secondary btn-sm" type="button" :data-name="item.name"
+                                    data-type="monthlyItems"
+                                    onclick="changeQuantity(this, 'more')">&rightarrow;</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <h4 class="mt-4">Gerichte für die Woche</h4>
+
+                <ul class="list-group mt-4">
+                    <li v-for="item in dishes" :key="item.name"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.name }}
+
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-secondary btn-sm" type="button" :data-name="item.name"
+                                    data-type="dishes"
+                                    onclick="changeQuantity(this, 'less')">&leftarrow;</span></button>
+                                <input type="text" v-bind:class="{ selected: item.quantity > 0 }"
+                                    class="form-control form-control-sm text-center" :value="item.quantity" readonly>
+                                <button class="btn btn-secondary btn-sm" type="button" :data-name="item.name"
+                                    data-type="dishes" onclick="changeQuantity(this, 'more')">&rightarrow;</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <h4 class="mt-4">Einkaufsliste</h4>
+
+                <ul class="list-group mt-4">
+                    <li v-for="item in shoppingList" :key="item.name"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ item.name }}
+                            <span class="badge rounded-pill bg-light text-dark">{{ item.grocery.category }}</span>
+                        </span>
+
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-secondary btn-sm" type="button" :data-name="item.name"
+                                    data-type="shoppingListItem" disabled>&leftarrow;</span></button>
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    :value="item.quantity + ' ' + item.grocery.unit" readonly>
+                                <button class="btn btn-secondary btn-sm" type="button" :data-name="item.name"
+                                    data-type="shoppingListItem" disabled>&rightarrow;</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+
+    <script src="js/classes.js" defer></script>
+    <script src="js/sheet.js" defer></script>
+    <script src="js/script.js" defer></script>
+
+</body>
+
+</html>

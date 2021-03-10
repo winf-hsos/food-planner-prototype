@@ -6,7 +6,11 @@ var weeklyOn = true;
 
 var app;
 
-getData("15ypt277oGcBK4hWXwFsKDTWX-Xxo5uYTb_--19CPRb4").then(run);
+var sheetKey = "15ypt277oGcBK4hWXwFsKDTWX-Xxo5uYTb_--19CPRb4";
+getData(sheetKey).then(run);
+
+var sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetKey}/edit#gid=502571385}/edit`;
+document.getElementById("linkSheet").setAttribute("href", sheetUrl);
 
 function run(data) {
 
